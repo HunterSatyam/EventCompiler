@@ -2,7 +2,7 @@ import React from 'react'
 import { Badge } from './ui/badge'
 import { useNavigate } from 'react-router-dom'
 import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar'
-import { Code2, Calendar, MapPin, Trophy, Users, Zap, Share2, Heart } from 'lucide-react'
+import { Code2, Calendar, MapPin, Trophy, Zap, Share2, Heart } from 'lucide-react'
 
 const HackathonCard = ({ job }) => {
     const navigate = useNavigate();

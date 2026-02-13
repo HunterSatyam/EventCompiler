@@ -57,7 +57,7 @@ function App() {
       }
     }
     fetchUser();
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>

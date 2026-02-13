@@ -2,7 +2,7 @@ import React from 'react'
 import { Badge } from './ui/badge'
 import { useNavigate } from 'react-router-dom'
 import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar'
-import { Building2, MapPin, Briefcase, IndianRupee, Clock, Heart, Share2, TrendingUp, Users } from 'lucide-react'
+import { Building2, MapPin, Briefcase, IndianRupee, Clock, Heart, Share2, Users } from 'lucide-react'
 
 const JobCard = ({ job }) => {
     const navigate = useNavigate();
