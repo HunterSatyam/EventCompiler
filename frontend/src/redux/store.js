@@ -3,6 +3,7 @@ import authSlice from "./authSlice";
 import jobSlice from "./jobSlice";
 import internshipSlice from "./internshipSlice";
 import hackathonSlice from "./hackathonSlice";
+import applicationSlice from "./applicationSlice";
 import {
     persistReducer,
     FLUSH,
@@ -25,7 +26,8 @@ const rootReducer = combineReducers({
     auth: authSlice,
     job: jobSlice,
     internship: internshipSlice,
-    hackathon: hackathonSlice
+    hackathon: hackathonSlice,
+    application: applicationSlice
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
