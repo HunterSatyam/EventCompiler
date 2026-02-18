@@ -9,11 +9,12 @@ dotenv.config();
 
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
     passport.use(
+        "google",
         new GoogleStrategy(
             {
                 clientID: process.env.GOOGLE_CLIENT_ID,
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                callbackURL: "/api/v1/user/auth/google/callback",
+                callbackURL: "http://localhost:8000/api/v1/user/auth/google/callback",
             },
             async (accessToken, refreshToken, profile, done) => {
                 try {
@@ -47,17 +48,20 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
 
 if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
     passport.use(
+        "github",
         new GitHubStrategy(
             {
                 clientID: process.env.GITHUB_CLIENT_ID,
                 clientSecret: process.env.GITHUB_CLIENT_SECRET,
-                callbackURL: "/api/v1/user/auth/github/callback",
+                callbackURL: "http://localhost:8000/api/v1/user/auth/github/callback",
                 scope: ["user:email"],
             },
             async (accessToken, refreshToken, profile, done) => {
                 try {
                     const email = profile.emails?.[0]?.value;
                     if (!email) {
+                        // If email is private, we might need to fetch it separately, but let's assume it's available for now
+                        // or use a dummy email if absolutely necessary (not recommended)
                         return done(new Error("No email found in GitHub profile"), null);
                     }
 
@@ -91,11 +95,12 @@ if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
 
 if (process.env.LINKEDIN_CLIENT_ID && process.env.LINKEDIN_CLIENT_SECRET) {
     passport.use(
+        "linkedin",
         new LinkedInStrategy(
             {
                 clientID: process.env.LINKEDIN_CLIENT_ID,
                 clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
-                callbackURL: "/api/v1/user/auth/linkedin/callback",
+                callbackURL: "http://localhost:8000/api/v1/user/auth/linkedin/callback",
                 scope: ["r_emailaddress", "r_liteprofile"],
             },
             async (accessToken, refreshToken, profile, done) => {

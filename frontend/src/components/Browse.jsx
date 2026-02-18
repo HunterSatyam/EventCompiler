@@ -1,13 +1,20 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from './shared/Navbar'
 import Job from './Job'
+import InternshipCard from './InternshipCard'
+import HackathonCard from './HackathonCard'
+import WebinarCard from './WebinarCard'
+import CompetitionCard from './CompetitionCard'
+import CertificationCard from './CertificationCard'
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchedQuery } from '@/redux/jobSlice';
 import useGetAllJobs from '@/hooks/useGetAllJobs';
 import useGetAllInternships from '@/hooks/useGetAllInternships';
 import useGetAllHackathons from '@/hooks/useGetAllHackathons';
+import useGetAllWebinars from '@/hooks/useGetAllWebinars';
+import useGetAllCompetitions from '@/hooks/useGetAllCompetitions';
+import useGetAllCertifications from '@/hooks/useGetAllCertifications';
 import { useSearchParams } from 'react-router-dom';
-import { useState } from 'react';
 
 const Browse = () => {
     const [searchParams] = useSearchParams();
@@ -16,10 +23,16 @@ const Browse = () => {
     useGetAllJobs();
     useGetAllInternships();
     useGetAllHackathons();
+    useGetAllWebinars();
+    useGetAllCompetitions();
+    useGetAllCertifications();
 
     const { allJobs } = useSelector(store => store.job);
     const { allInternship } = useSelector(store => store.internship);
     const { allHackathons } = useSelector(store => store.hackathon);
+    const { allWebinars } = useSelector(store => store.webinar);
+    const { allCompetitions } = useSelector(store => store.competition);
+    const { allCertifications } = useSelector(store => store.certification);
     const dispatch = useDispatch();
     const { searchedQuery } = useSelector(store => store.job);
 
@@ -38,22 +51,23 @@ const Browse = () => {
     }, [])
 
     useEffect(() => {
-        const combined = [...allJobs, ...(allInternship || []), ...(allHackathons || [])];
+        const combined = [
+            ...(allJobs?.map(item => ({ ...item, type: 'job' })) || []),
+            ...(allInternship?.map(item => ({ ...item, type: 'internship' })) || []),
+            ...(allHackathons?.map(item => ({ ...item, type: 'hackathon' })) || []),
+            ...(allWebinars?.map(item => ({ ...item, type: 'webinar' })) || []),
+            ...(allCompetitions?.map(item => ({ ...item, type: 'competition' })) || []),
+            ...(allCertifications?.map(item => ({ ...item, type: 'certification' })) || [])
+        ];
+
         const query = (searchedQuery || queryParam || "").toLowerCase();
 
         if (query) {
             const temp = combined.filter(item => {
                 const title = item.title?.toLowerCase() || "";
                 const desc = item.description?.toLowerCase() || "";
-                const type = item.jobType?.toLowerCase() || "";
+                const type = item.type?.toLowerCase() || "";
                 const location = item.location?.toLowerCase() || "";
-
-                // Special handling for "Job" query to match generic jobs (non-internship/non-hackathon)
-                if (query === 'job' || query === 'jobs') {
-                    if (type === 'job' || (type !== 'internship' && type !== 'hackathon')) {
-                        return true;
-                    }
-                }
 
                 return title.includes(query) || desc.includes(query) || type.includes(query) || location.includes(query);
             });
@@ -61,7 +75,7 @@ const Browse = () => {
         } else {
             setAllEvents(combined);
         }
-    }, [allJobs, allInternship, allHackathons, searchedQuery, queryParam]);
+    }, [allJobs, allInternship, allHackathons, allWebinars, allCompetitions, allCertifications, searchedQuery, queryParam]);
     return (
         <div>
             <Navbar />
@@ -69,10 +83,23 @@ const Browse = () => {
                 <h1 className='font-bold text-xl my-10'>Search Results ({allEvents.length})</h1>
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
                     {
-                        allEvents.map((job) => {
-                            return (
-                                <Job key={job._id} job={job} />
-                            )
+                        allEvents.map((item) => {
+                            switch (item.type) {
+                                case 'job':
+                                    return <Job key={item._id} job={item} />;
+                                case 'internship':
+                                    return <InternshipCard key={item._id} job={item} />;
+                                case 'hackathon':
+                                    return <HackathonCard key={item._id} job={item} />;
+                                case 'webinar':
+                                    return <WebinarCard key={item._id} job={item} />;
+                                case 'competition':
+                                    return <CompetitionCard key={item._id} job={item} />;
+                                case 'certification':
+                                    return <CertificationCard key={item._id} job={item} />;
+                                default:
+                                    return <Job key={item._id} job={item} />;
+                            }
                         })
                     }
                 </div>

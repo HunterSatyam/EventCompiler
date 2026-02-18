@@ -1,15 +1,19 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { addInternship } from '@/redux/internshipSlice'
-import { JOB_API_END_POINT } from '@/utils/constant'
+import { setFilters } from '@/redux/jobSlice'
+import { INTERNSHIP_API_END_POINT } from '@/utils/constant'
 import axios from 'axios'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Sparkles, ArrowRight, GraduationCap } from 'lucide-react'
 import InternshipCard from './InternshipCard'
+import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 
 const LatestInternship = () => {
     const { allInternship } = useSelector(store => store.internship);
     const { user } = useSelector(store => store.auth);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -17,9 +21,9 @@ const LatestInternship = () => {
         companyName: '',
         description: '',
         location: 'Remote',
-        salary: '',
-        experience: 3,
-        position: 1,
+        stipend: '',
+        duration: 3,
+        // position: 1,
         type: 'Internship',
         file: null
     });
@@ -40,25 +44,25 @@ const LatestInternship = () => {
             payload.append("title", formData.title);
             payload.append("description", formData.description);
             payload.append("requirements", formData.description);
-            payload.append("salary", Number(formData.salary));
+            payload.append("stipend", Number(formData.stipend));
             payload.append("location", formData.location);
-            payload.append("jobType", 'Internship');
-            payload.append("experience", Number(formData.experience));
-            payload.append("position", Number(formData.position));
+            // payload.append("jobType", 'Internship');
+            payload.append("duration", Number(formData.duration));
+            // payload.append("position", Number(formData.position));
             payload.append("companyName", formData.companyName);
-            payload.append("date", new Date().toISOString().split('T')[0]);
+            // payload.append("date", new Date().toISOString().split('T')[0]);
             if (formData.file) {
                 payload.append("file", formData.file);
             }
 
-            const res = await axios.post(`${JOB_API_END_POINT}/post`, payload, {
+            const res = await axios.post(`${INTERNSHIP_API_END_POINT}/post`, payload, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },
                 withCredentials: true
             });
             if (res.data.success) {
-                const updatedJob = res.data.job;
+                const updatedJob = res.data.internship;
                 dispatch(addInternship(updatedJob));
                 setIsModalOpen(false);
                 setFormData({ title: '', companyName: '', description: '', location: 'Remote', salary: '', experience: 3, position: 1, type: 'Internship', file: null });
@@ -73,24 +77,54 @@ const LatestInternship = () => {
     }
 
     return (
-        <div className='max-w-7xl mx-auto my-20 px-4'>
-            <div className='flex justify-between items-center mb-5'>
-                <h1 className='text-4xl font-bold'><span className='text-[#6A38C2]'>Latest & Top </span> Internship Openings</h1>
-                {user?.role === 'recruiter' && (
-                    <button
-                        onClick={() => setIsModalOpen(true)}
-                        className='bg-[#6A38C2] text-white px-4 py-2 rounded-md hover:bg-[#5b30a6] transition-colors'
-                    >
-                        Post Internship
-                    </button>
-                )}
+        <div className='max-w-7xl mx-auto my-32 px-4'>
+            <div className='flex flex-col md:flex-row justify-between items-end gap-6 mb-12'>
+                <div className='space-y-4'>
+                    <div className='inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 border border-blue-100 uppercase tracking-[0.2em] text-[10px] font-black'>
+                        <GraduationCap size={12} />
+                        Early Careers
+                    </div>
+                    <h1 className='text-5xl font-black text-gray-900 leading-tight'>
+                        Top <span className='text-blue-600'>Internship Openings</span>
+                    </h1>
+                    <p className='text-gray-500 font-medium max-w-lg'>
+                        Gain real-world experience and accelerate your growth with curated internships.
+                    </p>
+                </div>
+
+                <button
+                    onClick={() => {
+                        dispatch(setFilters({ type: 'Internships' }));
+                        navigate("/events");
+                    }}
+                    className='bg-black text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-gray-900 shadow-xl transition-all active:scale-95 flex items-center gap-2'
+                >
+                    View All Internships <ArrowRight size={16} />
+                </button>
             </div>
 
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-5'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 my-5'>
                 {
-                    !allInternship || allInternship.length <= 0 ? <span className="text-gray-500 text-lg">No Internship Available</span> : allInternship.slice(0, 6).map((item) => <InternshipCard key={item._id} job={item} />)
+                    !allInternship || allInternship.length <= 0 ? (
+                        <div className="col-span-full py-20 text-center border-2 border-dashed border-gray-100 rounded-[40px]">
+                            <span className="text-gray-400 text-lg font-bold uppercase tracking-widest">No Internships Available Currently</span>
+                        </div>
+                    ) : (
+                        allInternship.slice(0, 6).map((item, index) => (
+                            <motion.div
+                                key={item._id}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                            >
+                                <InternshipCard job={item} />
+                            </motion.div>
+                        ))
+                    )
                 }
             </div>
+
 
             {/* Modal */}
             {isModalOpen && (
@@ -144,8 +178,8 @@ const LatestInternship = () => {
                                 <div>
                                     <label className='block text-sm font-medium text-gray-700'>Stipend (₹k/month)</label>
                                     <input
-                                        type="number" name="salary" placeholder="e.g. 15"
-                                        value={formData.salary} onChange={handleInputChange} required
+                                        type="number" name="stipend" placeholder="e.g. 15"
+                                        value={formData.stipend} onChange={handleInputChange} required
                                         className="border p-2 rounded w-full mt-1"
                                     />
                                 </div>
@@ -154,8 +188,8 @@ const LatestInternship = () => {
                                 <div>
                                     <label className='block text-sm font-medium text-gray-700'>Duration (Months)</label>
                                     <input
-                                        type="number" name="experience" placeholder="e.g. 3"
-                                        value={formData.experience} onChange={handleInputChange} required
+                                        type="number" name="duration" placeholder="e.g. 3"
+                                        value={formData.duration} onChange={handleInputChange} required
                                         className="border p-2 rounded w-full mt-1"
                                     />
                                 </div>
@@ -163,7 +197,7 @@ const LatestInternship = () => {
                                     <label className='block text-sm font-medium text-gray-700'>No of Positions</label>
                                     <input
                                         type="number" name="position" placeholder="Number of openings"
-                                        value={formData.position} onChange={handleInputChange} required
+                                        value={formData.position} onChange={handleInputChange}
                                         className="border p-2 rounded w-full mt-1"
                                     />
                                 </div>

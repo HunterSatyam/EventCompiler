@@ -3,9 +3,11 @@ import { Badge } from './ui/badge'
 import { useNavigate } from 'react-router-dom'
 import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar'
 import { Code2, Calendar, MapPin, Trophy, Zap, Share2, Heart } from 'lucide-react'
+import { useSelector } from 'react-redux'
 
 const HackathonCard = ({ job }) => {
     const navigate = useNavigate();
+    const { user } = useSelector(store => store.auth);
 
     if (!job) return null;
 
@@ -16,7 +18,7 @@ const HackathonCard = ({ job }) => {
     const prize = job?.prize || 'To be announced';
 
     return (
-        <div onClick={() => navigate(`/description/${job._id}`)} className='bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 overflow-hidden cursor-pointer flex flex-col h-full group'>
+        <div onClick={() => navigate(`/description/hackathon/${job._id}`)} className='bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 overflow-hidden cursor-pointer flex flex-col h-full group'>
             {/* Header with accent - dark gradient */}
             <div className="h-2 bg-gradient-to-r from-slate-700 via-blue-600 to-slate-700"></div>
 
@@ -74,10 +76,16 @@ const HackathonCard = ({ job }) => {
                             <Heart className='w-4 h-4' />
                         </button>
                     </div>
-                    <button className='bg-gradient-to-r from-slate-700 to-blue-600 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:from-slate-800 hover:to-blue-700 transition-all flex items-center gap-1.5'>
-                        <Zap className='w-3.5 h-3.5' />
-                        Register
-                    </button>
+                    {
+                        user?.role === 'recruiter' ? (
+                            <></>
+                        ) : (
+                            <button className='bg-gradient-to-r from-slate-700 to-blue-600 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:from-slate-800 hover:to-blue-700 transition-all flex items-center gap-1.5'>
+                                <Zap className='w-3.5 h-3.5' />
+                                Register
+                            </button>
+                        )
+                    }
                 </div>
             </div>
         </div>

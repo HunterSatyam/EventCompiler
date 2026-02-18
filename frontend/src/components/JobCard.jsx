@@ -3,9 +3,11 @@ import { Badge } from './ui/badge'
 import { useNavigate } from 'react-router-dom'
 import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar'
 import { Building2, MapPin, Briefcase, IndianRupee, Clock, Heart, Share2, Users } from 'lucide-react'
+import { useSelector } from 'react-redux'
 
 const JobCard = ({ job }) => {
     const navigate = useNavigate();
+    const { user } = useSelector(store => store.auth);
 
     if (!job) return null;
 
@@ -41,7 +43,7 @@ const JobCard = ({ job }) => {
     const timeAgo = getTimeAgo(job?.createdAt);
 
     return (
-        <div onClick={() => navigate(`/description/${job._id}`)} className='bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 overflow-hidden cursor-pointer flex flex-col h-full group'>
+        <div onClick={() => navigate(`/description/job/${job._id}`)} className='bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 overflow-hidden cursor-pointer flex flex-col h-full group'>
             {/* Header */}
             <div className="p-5 pb-3">
                 <div className="flex items-start justify-between gap-3 mb-3">
@@ -118,14 +120,20 @@ const JobCard = ({ job }) => {
                             <span className='text-sm font-bold text-green-700'>{salary}</span>
                         </div>
                     </div>
-                    <div className='flex items-center gap-2'>
-                        <button className='text-gray-400 hover:text-blue-600 p-1.5 rounded-lg hover:bg-blue-50 transition-colors'>
-                            <Share2 className='w-4 h-4' />
-                        </button>
-                        <button className='bg-blue-600 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-blue-700 transition-colors'>
-                            Apply Now
-                        </button>
-                    </div>
+                    {
+                        user?.role === 'recruiter' ? (
+                            <></>
+                        ) : (
+                            <div className='flex items-center gap-2'>
+                                <button className='text-gray-400 hover:text-blue-600 p-1.5 rounded-lg hover:bg-blue-50 transition-colors'>
+                                    <Share2 className='w-4 h-4' />
+                                </button>
+                                <button className='bg-blue-600 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-blue-700 transition-colors'>
+                                    Apply Now
+                                </button>
+                            </div>
+                        )
+                    }
                 </div>
             </div>
         </div>

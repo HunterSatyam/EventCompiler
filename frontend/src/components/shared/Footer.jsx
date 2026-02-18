@@ -7,8 +7,8 @@ const Footer = () => {
             <div className="container mx-auto px-4">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                     <div className="flex flex-col gap-2">
-                        <h2 className="text-xl font-bold">Event<span className="text-[#F83002]">Compiler</span></h2>
-                        <p className="text-sm text-gray-500">© 2026 EventCompiler. All rights reserved.</p>
+                        <h2 className="text-xl font-bold">Career<span className="text-[#F83002]">Compass</span></h2>
+                        <p className="text-sm text-gray-500">© 2026 CareerCompass. All rights reserved.</p>
                     </div>
                     <div className="flex gap-4">
                         <h2 className="font-medium text-gray-800">Follow us</h2>

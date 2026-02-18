@@ -3,9 +3,11 @@ import { Badge } from './ui/badge'
 import { useNavigate } from 'react-router-dom'
 import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar'
 import { Briefcase, MapPin, Clock, IndianRupee, GraduationCap, Share2, Heart, ArrowRight } from 'lucide-react'
+import { useSelector } from 'react-redux'
 
 const InternshipCard = ({ job }) => {
     const navigate = useNavigate();
+    const { user } = useSelector(store => store.auth);
 
     if (!job) return null;
 
@@ -14,7 +16,7 @@ const InternshipCard = ({ job }) => {
     const stipend = job?.salary ? `₹${job.salary}k/month` : 'Unpaid';
 
     return (
-        <div onClick={() => navigate(`/description/${job._id}`)} className='bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 overflow-hidden cursor-pointer flex flex-col h-full group'>
+        <div onClick={() => navigate(`/description/internship/${job._id}`)} className='bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 overflow-hidden cursor-pointer flex flex-col h-full group'>
             {/* Header with light gradient */}
             <div className="h-16 bg-gradient-to-r from-purple-50 to-pink-50 relative p-4 flex justify-between items-center border-b border-purple-100">
                 <Badge className="bg-white text-purple-600 border border-purple-200 shadow-sm font-semibold text-xs">
@@ -75,11 +77,17 @@ const InternshipCard = ({ job }) => {
                 </p>
 
                 {/* Apply Button */}
-                <div className="mt-auto pt-2">
-                    <button className="w-full py-2.5 bg-purple-500 text-white rounded-lg text-sm font-semibold hover:bg-purple-600 transition-all flex items-center justify-center gap-2 group-hover:shadow-md">
-                        Apply Now <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </button>
-                </div>
+                {
+                    user?.role === 'recruiter' ? (
+                        <></>
+                    ) : (
+                        <div className="mt-auto pt-2">
+                            <button className="w-full py-2.5 bg-purple-500 text-white rounded-lg text-sm font-semibold hover:bg-purple-600 transition-all flex items-center justify-center gap-2 group-hover:shadow-md">
+                                Apply Now <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            </button>
+                        </div>
+                    )
+                }
             </div>
         </div>
     )

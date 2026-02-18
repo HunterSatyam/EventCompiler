@@ -10,7 +10,7 @@ const LatestJobCards = ({ job }) => {
     if (!job) return null;
 
     return (
-        <div onClick={() => navigate(`/description/${job._id}`)} className='p-6 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 bg-white border border-gray-100 cursor-pointer relative group flex flex-col gap-4'>
+        <div onClick={() => navigate(`/description/job/${job._id}`)} className='p-6 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 bg-white border border-gray-100 cursor-pointer relative group flex flex-col gap-4'>
             {/* Top Section: Title, Company, Logo */}
             <div className='flex justify-between items-start'>
                 <div className='flex-1 pr-4'>

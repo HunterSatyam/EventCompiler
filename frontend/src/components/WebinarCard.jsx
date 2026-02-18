@@ -3,9 +3,11 @@ import { Badge } from './ui/badge'
 import { useNavigate } from 'react-router-dom'
 import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar'
 import { Calendar, Clock, Video, Users, Share2, Heart, ExternalLink } from 'lucide-react'
+import { useSelector } from 'react-redux'
 
 const WebinarCard = ({ job }) => {
     const navigate = useNavigate();
+    const { user } = useSelector(store => store.auth);
 
     if (!job) return null;
 
@@ -18,7 +20,7 @@ const WebinarCard = ({ job }) => {
     const cost = job?.salary === 0 ? "Free" : `₹${job?.salary}`;
 
     return (
-        <div onClick={() => navigate(`/description/${job._id}`)} className='bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden cursor-pointer flex flex-col h-full group'>
+        <div onClick={() => navigate(`/description/webinar/${job._id}`)} className='bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 overflow-hidden cursor-pointer flex flex-col h-full group'>
             {/* Banner Idea: If we had a banner image, it would go here. For now, using a gradient header */}
             <div className="h-24 bg-gradient-to-r from-blue-600 to-indigo-600 relative p-4 flex justify-between items-start">
                 <Badge className="bg-white/20 text-white backdrop-blur-sm border-none hover:bg-white/30">
@@ -64,11 +66,17 @@ const WebinarCard = ({ job }) => {
                 </div>
 
                 {/* Register Button */}
-                <div className="mt-auto pt-2">
-                    <button className="w-full py-2.5 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 group-hover:bg-blue-600">
-                        Register Now <ExternalLink className="w-4 h-4" />
-                    </button>
-                </div>
+                {
+                    user?.role === 'recruiter' ? (
+                        <></>
+                    ) : (
+                        <div className="mt-auto pt-2">
+                            <button className="w-full py-2.5 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 group-hover:bg-blue-600">
+                                Register Now <ExternalLink className="w-4 h-4" />
+                            </button>
+                        </div>
+                    )
+                }
             </div>
         </div>
     )

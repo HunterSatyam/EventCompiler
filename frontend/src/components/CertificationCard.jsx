@@ -3,9 +3,11 @@ import { Badge } from './ui/badge'
 import { useNavigate } from 'react-router-dom'
 import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar'
 import { Award, CheckCircle, BookOpen, Clock, Users, Share2, Heart } from 'lucide-react'
+import { useSelector } from 'react-redux'
 
 const CertificationCard = ({ job }) => {
     const navigate = useNavigate();
+    const { user } = useSelector(store => store.auth);
 
     if (!job) return null;
 
@@ -13,7 +15,7 @@ const CertificationCard = ({ job }) => {
     const cost = job?.salary === 0 ? "Free" : `₹${job?.salary}`;
 
     return (
-        <div onClick={() => navigate(`/description/${job._id}`)} className='bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden cursor-pointer flex flex-col h-full group'>
+        <div onClick={() => navigate(`/description/certification/${job._id}`)} className='bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden cursor-pointer flex flex-col h-full group'>
             {/* Header with Pattern/Color */}
             <div className="h-20 bg-emerald-50 relative p-4 flex justify-between items-start">
                 <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#10b981 1px, transparent 1px)', backgroundSize: '10px 10px' }}></div>
@@ -60,11 +62,17 @@ const CertificationCard = ({ job }) => {
                 </div>
 
                 {/* Enroll Button */}
-                <div className="mt-auto pt-2">
-                    <button className="w-full py-2.5 border border-emerald-600 text-emerald-700 bg-white rounded-lg text-sm font-semibold hover:bg-emerald-50 transition-colors flex items-center justify-center gap-2 group-hover:bg-emerald-600 group-hover:text-white">
-                        Access Course
-                    </button>
-                </div>
+                {
+                    user?.role === 'recruiter' ? (
+                        <></>
+                    ) : (
+                        <div className="mt-auto pt-2">
+                            <button className="w-full py-2.5 border border-emerald-600 text-emerald-700 bg-white rounded-lg text-sm font-semibold hover:bg-emerald-50 transition-colors flex items-center justify-center gap-2 group-hover:bg-emerald-600 group-hover:text-white">
+                                Access Course
+                            </button>
+                        </div>
+                    )
+                }
 
             </div>
         </div>

@@ -1,48 +1,112 @@
 import { Application } from "../models/application.model.js";
 import { Job } from "../models/job.model.js";
+import { Internship } from "../models/internship.model.js";
+import { Hackathon } from "../models/hackathon.model.js";
+import { Webinar } from "../models/webinar.model.js";
+import { Competition } from "../models/competition.model.js";
+import { Certification } from "../models/certification.model.js";
 
 export const applyJob = async (req, res) => {
     try {
         const userId = req.id;
-        const jobId = req.params.id;
+        const jobId = req.params.id; // This is the entity ID (Job, Internship, etc.)
+        const type = req.query.type || 'job'; // Default to 'job' if not provided
+
         if (!jobId) {
             return res.status(400).json({
-                message: "Job id is required.",
+                message: "ID is required.",
                 success: false
             })
         };
-        // check if the user has already applied for the job
+
+        // Determine the model based on type
+        let Model;
+        let modelName;
+
+        switch (type.toLowerCase()) {
+            case 'job':
+                Model = Job;
+                modelName = 'Job';
+                break;
+            case 'internship':
+                Model = Internship;
+                modelName = 'Internship';
+                break;
+            case 'hackathon':
+                Model = Hackathon;
+                modelName = 'Hackathon';
+                break;
+            case 'webinar':
+                Model = Webinar;
+                modelName = 'Webinar';
+                break;
+            case 'competition':
+                Model = Competition;
+                modelName = 'Competition';
+                break;
+            case 'certification':
+                Model = Certification;
+                modelName = 'Certification';
+                break;
+            default:
+                return res.status(400).json({
+                    message: "Invalid application type.",
+                    success: false
+                });
+        }
+
+        // check if the user has already applied for the entity
         const existingApplication = await Application.findOne({ job: jobId, applicant: userId });
 
         if (existingApplication) {
             return res.status(400).json({
-                message: "You have already applied for this jobs",
+                message: `You have already applied for this ${modelName.toLowerCase()}`,
                 success: false
             });
         }
 
-        // check if the jobs exists
-        const job = await Job.findById(jobId);
-        if (!job) {
+        // check if the entity exists
+        const entity = await Model.findById(jobId);
+        if (!entity) {
             return res.status(404).json({
-                message: "Job not found",
+                message: `${modelName} not found`,
                 success: false
             })
         }
-        // create a new application
+
+        // Create a new application
         const newApplication = await Application.create({
             job: jobId,
             applicant: userId,
+            applicationType: modelName,
+            status: 'pending'
         });
 
-        job.applications.push(newApplication._id);
-        await job.save();
+        // Add application to the entity's specific array
+        if (modelName === 'Webinar') {
+            entity.registrations.push(newApplication._id);
+        } else if (modelName === 'Competition') {
+            entity.participants.push(newApplication._id);
+        } else if (modelName === 'Certification') {
+            entity.enrollments.push(newApplication._id);
+        } else {
+            // Job, Internship, Hackathon use 'applications'
+            if (entity.applications) {
+                entity.applications.push(newApplication._id);
+            }
+        }
+        await entity.save();
+
         return res.status(201).json({
-            message: "Job applied successfully.",
+            message: "Applied successfully.",
             success: true
         })
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            message: "Internal Server Error",
+            success: false
+        })
     }
 };
 export const getAppliedJobs = async (req, res) => {

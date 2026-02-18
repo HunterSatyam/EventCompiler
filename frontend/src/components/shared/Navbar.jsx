@@ -9,10 +9,14 @@ import axios from 'axios'
 import { USER_API_END_POINT } from '@/utils/constant'
 import { setUser } from '@/redux/authSlice'
 import { toast } from 'sonner'
+import useGetNotifications from '@/hooks/useGetNotifications'
 
 const Navbar = () => {
+    useGetNotifications();
     const { user } = useSelector(store => store.auth);
+    const { allNotifications } = useSelector(store => store.notification);
     const dispatch = useDispatch();
+
     const navigate = useNavigate();
 
     const logoutHandler = async () => {
@@ -29,30 +33,41 @@ const Navbar = () => {
         }
     }
     return (
-        <div className='bg-white'>
+        <div className='sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100'>
             <div className='flex items-center justify-between mx-auto max-w-7xl h-16 px-12'>
                 <div>
                     <Link to="/">
-                        <h1 className='text-2xl font-bold'>Event<span className='text-[#F83002]'>Compiler</span></h1>
+                        <h1 className='text-2xl font-black tracking-tight'>Career<span className='text-[#F83002]'>Compass</span></h1>
                     </Link>
                 </div>
                 <div className='flex items-center gap-12'>
-                    <ul className='flex font-medium items-center gap-5'>
+                    <ul className='flex font-black text-sm uppercase tracking-widest items-center gap-6 text-gray-600'>
                         {
                             user && user.role === 'recruiter' ? (
                                 <>
-                                    <li><Link to="/admin/companies">Companies</Link></li>
-                                    <li><Link to="/admin/jobs">Jobs</Link></li>
+                                    <li className='hover:text-purple-600 transition-colors'><Link to="/">Home</Link></li>
+                                    <li className='hover:text-purple-600 transition-colors'><Link to="/admin/companies">Organisation</Link></li>
+                                    <li className='hover:text-purple-600 transition-colors'><Link to="/admin/posts">Posts</Link></li>
+                                    <li className='hover:text-purple-600 transition-colors'><Link to="/admin/create">Create Post</Link></li>
                                 </>
                             ) : (
                                 <>
-                                    <li><Link to="/">Home</Link></li>
-                                    <li><Link to="/jobs">Jobs</Link></li>
-                                    <li><Link to="/notification">Notification</Link></li>
-                                    <li><Link to="/browse">Browse</Link></li>
+                                    <li className='hover:text-purple-600 transition-colors'><Link to="/">Home</Link></li>
+                                    <li className='hover:text-purple-600 transition-colors'><Link to="/events">Events</Link></li>
+                                    <li className='hover:text-purple-600 transition-colors relative'>
+                                        <Link to="/notification">Notification</Link>
+                                        {allNotifications.filter(n => !n.isRead).length > 0 && (
+                                            <span className='absolute -top-2 -right-3 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] text-white font-bold ring-2 ring-white animate-pulse'>
+                                                {allNotifications.filter(n => !n.isRead).length}
+                                            </span>
+                                        )}
+                                    </li>
+                                    <li className='hover:text-purple-600 transition-colors'><Link to="/browse">Browse</Link></li>
+
                                 </>
                             )
                         }
+
 
 
                     </ul>

@@ -257,7 +257,7 @@ export const socialLogin = async (req, res) => {
         const token = await jwt.sign(tokenData, process.env.SECRET_KEY, { expiresIn: '1d' });
 
         return res.status(200)
-            .cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict' })
+            .cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'lax' })
             .redirect("http://localhost:5173/");
 
     } catch (error) {

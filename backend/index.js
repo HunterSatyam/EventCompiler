@@ -7,6 +7,12 @@ import userRoute from "./routes/user.route.js";
 import companyRoute from "./routes/company.route.js";
 import jobRoute from "./routes/job.route.js";
 import applicationRoute from "./routes/application.route.js";
+import internshipRoute from "./routes/internship.route.js";
+import hackathonRoute from "./routes/hackathon.route.js";
+import webinarRoute from "./routes/webinar.route.js";
+import competitionRoute from "./routes/competition.route.js";
+import certificationRoute from "./routes/certification.route.js";
+import notificationRoute from "./routes/notification.route.js";
 import session from "express-session";
 import passport from "passport";
 import "./utils/passport.js";
@@ -48,6 +54,12 @@ app.use("/api/v1/user", userRoute);
 app.use("/api/v1/company", companyRoute);
 app.use("/api/v1/job", jobRoute);
 app.use("/api/v1/application", applicationRoute);
+app.use("/api/v1/internship", internshipRoute);
+app.use("/api/v1/hackathon", hackathonRoute);
+app.use("/api/v1/webinar", webinarRoute);
+app.use("/api/v1/competition", competitionRoute);
+app.use("/api/v1/certification", certificationRoute);
+app.use("/api/v1/notification", notificationRoute);
 //"http://localhost:8000/api/v1/user/register"
 
 

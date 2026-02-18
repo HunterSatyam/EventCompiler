@@ -4,6 +4,11 @@ import jobSlice from "./jobSlice";
 import internshipSlice from "./internshipSlice";
 import hackathonSlice from "./hackathonSlice";
 import applicationSlice from "./applicationSlice";
+import notificationSlice from "./notificationSlice";
+import webinarSlice from "./webinarSlice";
+import competitionSlice from "./competitionSlice";
+import certificationSlice from "./certificationSlice";
+import companySlice from "./companySlice";
 import {
     persistReducer,
     FLUSH,
@@ -27,7 +32,12 @@ const rootReducer = combineReducers({
     job: jobSlice,
     internship: internshipSlice,
     hackathon: hackathonSlice,
-    application: applicationSlice
+    application: applicationSlice,
+    notification: notificationSlice,
+    webinar: webinarSlice,
+    competition: competitionSlice,
+    certification: certificationSlice,
+    company: companySlice
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

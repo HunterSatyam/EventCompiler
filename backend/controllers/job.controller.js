@@ -73,6 +73,12 @@ export const postJob = async (req, res) => {
 
         await job.populate('company');
 
+        // Trigger notifications for matching students
+        import("../utils/notificationHelper.js").then(module => {
+            module.notifyMatchingStudents(job, jobType || 'Job');
+        });
+
+
         return res.status(201).json({
             message: "New job created successfully.",
             job,

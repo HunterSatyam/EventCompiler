@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { addHackathon } from '@/redux/hackathonSlice'
-import { JOB_API_END_POINT } from '@/utils/constant'
+import { setFilters } from '@/redux/jobSlice'
+import { HACKATHON_API_END_POINT } from '@/utils/constant'
 import axios from 'axios'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Sparkles, ArrowRight, Code } from 'lucide-react'
 import HackathonCard from './HackathonCard'
+import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 
 const LatestHackathon = () => {
     const { allHackathons } = useSelector(store => store.hackathon);
     const { user } = useSelector(store => store.auth);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -39,11 +43,11 @@ const LatestHackathon = () => {
             payload.append("title", formData.title);
             payload.append("description", formData.description);
             payload.append("requirements", formData.description);
-            payload.append("salary", Number(formData.prize) ? Number(formData.prize) : 0);
+            // payload.append("salary", Number(formData.prize) ? Number(formData.prize) : 0);
             payload.append("location", formData.location);
-            payload.append("jobType", 'Hackathon');
-            payload.append("experience", 0);
-            payload.append("position", 1);
+            // payload.append("jobType", 'Hackathon');
+            // payload.append("experience", 0);
+            // payload.append("position", 1);
             payload.append("companyName", formData.companyName);
             payload.append("date", formData.date);
             payload.append("prize", formData.prize);
@@ -51,14 +55,14 @@ const LatestHackathon = () => {
                 payload.append("file", formData.file);
             }
 
-            const res = await axios.post(`${JOB_API_END_POINT}/post`, payload, {
+            const res = await axios.post(`${HACKATHON_API_END_POINT}/post`, payload, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },
                 withCredentials: true
             });
             if (res.data.success) {
-                const updatedJob = res.data.job;
+                const updatedJob = res.data.hackathon;
                 dispatch(addHackathon(updatedJob));
                 setIsModalOpen(false);
                 setFormData({ title: '', companyName: '', description: '', date: '', location: '', prize: '', type: 'Hackathon' });
@@ -73,24 +77,54 @@ const LatestHackathon = () => {
     }
 
     return (
-        <div className='max-w-7xl mx-auto my-20 px-4'>
-            <div className='flex justify-between items-center mb-5'>
-                <h1 className='text-4xl font-bold'><span className='text-[#6A38C2]'>Latest & Top </span> Hackathons</h1>
-                {user?.role === 'recruiter' && (
-                    <button
-                        onClick={() => setIsModalOpen(true)}
-                        className='bg-[#6A38C2] text-white px-4 py-2 rounded-md hover:bg-[#5b30a6] transition-colors'
-                    >
-                        Post Hackathon
-                    </button>
-                )}
+        <div className='max-w-7xl mx-auto my-32 px-4'>
+            <div className='flex flex-col md:flex-row justify-between items-end gap-6 mb-12'>
+                <div className='space-y-4'>
+                    <div className='inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100 uppercase tracking-[0.2em] text-[10px] font-black'>
+                        <Code size={12} />
+                        Coding Challenges
+                    </div>
+                    <h1 className='text-5xl font-black text-gray-900 leading-tight'>
+                        Live <span className='text-emerald-600'>Hackathons</span>
+                    </h1>
+                    <p className='text-gray-500 font-medium max-w-lg'>
+                        Push your limits, build innovative solutions, and win amazing prizes in world-class hackathons.
+                    </p>
+                </div>
+
+                <button
+                    onClick={() => {
+                        dispatch(setFilters({ type: 'Hackathons' }));
+                        navigate("/events");
+                    }}
+                    className='bg-black text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-gray-900 shadow-xl transition-all active:scale-95 flex items-center gap-2'
+                >
+                    View All Hackathons <ArrowRight size={16} />
+                </button>
             </div>
 
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-5'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 my-5'>
                 {
-                    !allHackathons || allHackathons.length <= 0 ? <span className="text-gray-500 text-lg">No Hackathons Available</span> : allHackathons.slice(0, 6).map((item) => <HackathonCard key={item._id} job={item} />)
+                    !allHackathons || allHackathons.length <= 0 ? (
+                        <div className="col-span-full py-20 text-center border-2 border-dashed border-gray-100 rounded-[40px]">
+                            <span className="text-gray-400 text-lg font-bold uppercase tracking-widest">No Hackathons Available Currently</span>
+                        </div>
+                    ) : (
+                        allHackathons.slice(0, 6).map((item, index) => (
+                            <motion.div
+                                key={item._id}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                            >
+                                <HackathonCard job={item} />
+                            </motion.div>
+                        ))
+                    )
                 }
             </div>
+
 
             {/* Modal */}
             {isModalOpen && (

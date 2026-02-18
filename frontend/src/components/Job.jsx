@@ -1,13 +1,12 @@
 import React from 'react'
 import { Button } from './ui/button'
-import { Bookmark } from 'lucide-react'
-import { Avatar, AvatarImage } from './ui/avatar'
+import { Bookmark, MapPin, Briefcase, IndianRupee, Clock, ArrowRight } from 'lucide-react'
+import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar'
 import { Badge } from './ui/badge'
 import { useNavigate } from 'react-router-dom'
 
 const Job = ({ job }) => {
     const navigate = useNavigate();
-    // const jobId = "lsekdhjgdsnfvsdkjf";
 
     const daysAgoFunction = (mongodbTime) => {
         const createdAt = new Date(mongodbTime);
@@ -16,40 +15,87 @@ const Job = ({ job }) => {
         return Math.floor(timeDifference / (1000 * 24 * 60 * 60));
     }
 
+    const timeAgo = daysAgoFunction(job?.createdAt);
 
     return (
-        <div className='p-6 rounded-xl shadow-lg bg-white border border-gray-100 hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1 hover:border-[#6A38C2]/30 flex flex-col justify-between h-full bg-gradient-to-br from-white to-gray-50/50'>
-            <div className='flex items-center justify-between mb-4'>
-                <p className='text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full'>{daysAgoFunction(job?.createdAt) === 0 ? "New Today" : `${daysAgoFunction(job?.createdAt)} days ago`}</p>
-                <Button variant="ghost" className="rounded-full hover:bg-gray-100 text-gray-500 hover:text-[#6A38C2] transition-colors" size="icon"><Bookmark className="w-5 h-5" /></Button>
+        <div className='group bg-white rounded-[24px] p-6 shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-purple-200/50 flex flex-col h-full relative overflow-hidden'>
+            {/* Top Shine Effect */}
+            <div className='absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity' />
+
+            <div className='flex items-center justify-between mb-6'>
+                <div className='px-3 py-1 bg-gray-50 rounded-full border border-gray-100 flex items-center gap-1.5'>
+                    <Clock size={12} className='text-gray-400' />
+                    <p className='text-[10px] font-black text-gray-400 uppercase tracking-widest'>
+                        {timeAgo === 0 ? "Today" : `${timeAgo} days ago`}
+                    </p>
+                </div>
+                <Button variant="ghost" size="icon" className="rounded-full hover:bg-purple-50 hover:text-purple-600 transition-colors">
+                    <Bookmark size={20} />
+                </Button>
             </div>
 
-            <div className='flex items-center gap-4 mb-4'>
-                <div className="p-2 rounded-lg bg-white shadow-sm border border-gray-100">
-                    <Avatar className="h-12 w-12">
-                        <AvatarImage src={job?.logo || job?.company?.logo} alt={job?.company?.name} />
+            <div className='flex items-center gap-4 mb-6'>
+                <div className="p-1 rounded-[16px] bg-white shadow-sm border border-gray-100 transition-transform group-hover:scale-105 duration-300">
+                    <Avatar className="h-14 w-14 rounded-[12px]">
+                        <AvatarImage src={job?.logo || job?.company?.logo} alt={job?.company?.name} className="object-cover" />
+                        <AvatarFallback className="rounded-[12px] bg-purple-50 text-purple-600 font-black text-xl">
+                            {job?.company?.name?.charAt(0)}
+                        </AvatarFallback>
                     </Avatar>
                 </div>
-                <div>
-                    <h1 className='font-bold text-lg text-gray-900 leading-tight'>{job?.company?.name}</h1>
-                    <p className='text-sm text-gray-500 font-medium'>India</p>
+                <div className='min-w-0'>
+                    <h2 className='font-black text-lg text-gray-900 leading-tight truncate'>{job?.company?.name}</h2>
+                    <div className='flex items-center gap-1 text-gray-400'>
+                        <MapPin size={12} />
+                        <p className='text-xs font-bold uppercase tracking-wider'>{job?.location || "India"}</p>
+                    </div>
                 </div>
             </div>
 
-            <div className="mb-4">
-                <h1 className='font-bold text-xl my-2 text-gray-800 line-clamp-1 group-hover:text-[#6A38C2] transition-colors'>{job?.title}</h1>
-                <p className='text-sm text-gray-600 line-clamp-2 leading-relaxed h-[42px]'>{job?.description}</p>
+            <div className="mb-6 flex-1">
+                <h1 className='font-black text-xl mb-3 text-gray-900 group-hover:text-purple-600 transition-colors line-clamp-2 leading-tight'>
+                    {job?.title}
+                </h1>
+                <p className='text-sm text-gray-500 line-clamp-2 leading-relaxed font-medium'>
+                    {job?.description}
+                </p>
             </div>
 
-            <div className='flex items-center gap-2 mt-auto mb-6 flex-wrap'>
-                <Badge className={'text-blue-700 bg-blue-50 hover:bg-blue-100 border-blue-200 font-bold px-3 py-1'} variant="outline">{job?.position} Positions</Badge>
-                <Badge className={'text-[#F83002] bg-red-50 hover:bg-red-100 border-red-200 font-bold px-3 py-1'} variant="outline">{job?.jobType}</Badge>
-                <Badge className={'text-[#7209b7] bg-purple-50 hover:bg-purple-100 border-purple-200 font-bold px-3 py-1'} variant="outline">{job?.salary} LPA</Badge>
+            <div className='flex flex-wrap items-center gap-2 mb-8'>
+                <Badge className='bg-blue-50/50 text-blue-600 border-blue-100 px-3 py-1.5 rounded-xl font-black text-[10px] uppercase tracking-wider' variant="outline">
+                    <div className='flex items-center gap-1.5'>
+                        <Briefcase size={12} />
+                        {job?.position} Positions
+                    </div>
+                </Badge>
+                <Badge className='bg-red-50/50 text-red-600 border-red-100 px-3 py-1.5 rounded-xl font-black text-[10px] uppercase tracking-wider' variant="outline">
+                    {job?.jobType}
+                </Badge>
+                <Badge className='bg-emerald-50/50 text-emerald-600 border-emerald-100 px-3 py-1.5 rounded-xl font-black text-[10px] uppercase tracking-wider' variant="outline">
+                    <div className='flex items-center gap-1'>
+                        <IndianRupee size={12} />
+                        {job?.salary} LPA
+                    </div>
+                </Badge>
             </div>
 
             <div className='flex items-center gap-3 mt-auto'>
-                <Button onClick={() => navigate(`/description/${job?._id}`)} variant="outline" className="flex-1 border-gray-300 hover:bg-gray-50 hover:border-gray-400 text-gray-700 font-medium transition-all">Details</Button>
-                <Button className="flex-1 bg-[#6A38C2] hover:bg-[#5b30a6] text-white font-medium shadow-md hover:shadow-lg transition-all">Save For Later</Button>
+                <Button
+                    onClick={() => navigate(`/description/job/${job?._id}`)}
+                    variant="outline"
+                    className="flex-1 h-12 rounded-2xl border-gray-100 hover:bg-gray-50 hover:border-gray-200 text-gray-900 font-black text-xs uppercase tracking-widest transition-all"
+                >
+                    Details
+                </Button>
+                <Button
+                    variant="default"
+                    className="flex-1 h-12 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-black text-xs uppercase tracking-widest shadow-lg shadow-purple-200 hover:shadow-purple-300 transition-all group/btn"
+                >
+                    <span className='flex items-center gap-2'>
+                        Quick Apply
+                        <ArrowRight size={16} className='group-hover/btn:translate-x-1 transition-transform' />
+                    </span>
+                </Button>
             </div>
         </div>
     )

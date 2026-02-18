@@ -3,9 +3,11 @@ import { Badge } from './ui/badge'
 import { useNavigate } from 'react-router-dom'
 import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar'
 import { MapPin, Share2, Heart, Users, Calendar, Trophy, Zap } from 'lucide-react'
+import { useSelector } from 'react-redux'
 
 const CompetitionCard = ({ job }) => {
     const navigate = useNavigate();
+    const { user } = useSelector(store => store.auth);
 
     if (!job) return null;
 
@@ -14,7 +16,7 @@ const CompetitionCard = ({ job }) => {
     const daysLeft = 7;
 
     return (
-        <div onClick={() => navigate(`/description/${job._id}`)} className='bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden cursor-pointer flex flex-col h-full group relative'>
+        <div onClick={() => navigate(`/description/competition/${job._id}`)} className='bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden cursor-pointer flex flex-col h-full group relative'>
 
             {/* Top Accent Bar */}
             <div className="h-2 w-full bg-gradient-to-r from-purple-500 to-indigo-600"></div>
@@ -79,10 +81,16 @@ const CompetitionCard = ({ job }) => {
                         <span>{daysLeft} days left</span>
                     </div>
 
-                    <div className='flex gap-2 text-gray-400'>
-                        <button className='hover:text-purple-600 p-1.5 hover:bg-purple-50 rounded-full transition-colors'><Share2 className='w-4 h-4' /></button>
-                        <button className='hover:text-red-500 p-1.5 hover:bg-red-50 rounded-full transition-colors'><Heart className='w-4 h-4' /></button>
-                    </div>
+                    {
+                        user?.role === 'recruiter' ? (
+                            <></>
+                        ) : (
+                            <div className='flex gap-2 text-gray-400'>
+                                <button className='hover:text-purple-600 p-1.5 hover:bg-purple-50 rounded-full transition-colors'><Share2 className='w-4 h-4' /></button>
+                                <button className='hover:text-red-500 p-1.5 hover:bg-red-50 rounded-full transition-colors'><Heart className='w-4 h-4' /></button>
+                            </div>
+                        )
+                    }
                 </div>
 
             </div>
