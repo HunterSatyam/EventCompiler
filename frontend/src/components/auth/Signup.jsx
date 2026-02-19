@@ -100,21 +100,21 @@ const Signup = () => {
             </div>
 
             {/* Right Side - Form Section */}
-            <div className='w-full lg:w-1/2 flex items-center justify-center p-8 bg-[#FDFCFE] h-screen overflow-y-auto'>
+            <div className='w-full lg:w-1/2 flex items-center justify-center p-4 bg-[#FDFCFE] h-screen overflow-y-auto'>
                 <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className='w-full max-w-md space-y-8 py-8'
+                    className='w-full max-w-md space-y-4'
                 >
                     <div className='text-center lg:text-left'>
-                        <h2 className='text-3xl font-black text-gray-900 tracking-tight'>Create an account</h2>
-                        <p className='text-gray-500 mt-2 font-medium'>It only takes a minute to get started</p>
+                        <h2 className='text-2xl font-black text-gray-900 tracking-tight'>Create an account</h2>
+                        <p className='text-gray-500 mt-1 font-medium text-sm'>It only takes a minute to get started</p>
                     </div>
 
-                    <form onSubmit={submitHandler} className='space-y-5'>
-                        <div className='space-y-4'>
+                    <form onSubmit={submitHandler} className='space-y-3'>
+                        <div className='space-y-2'>
                             <div className='grid grid-cols-1 gap-4'>
-                                <div className='space-y-2'>
+                                <div className='space-y-1'>
                                     <Label className="text-xs font-black text-gray-500 uppercase tracking-widest ml-1">Full Name</Label>
                                     <div className='relative'>
                                         <div className='absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none'>
@@ -126,13 +126,13 @@ const Signup = () => {
                                             value={input.fullname}
                                             name="fullname"
                                             onChange={changeEventHandler}
-                                            className="pl-10 h-10 bg-white border-gray-100 focus:border-purple-500 focus:ring-purple-500/20 rounded-xl font-medium transition-all"
+                                            className="pl-10 h-8 bg-white border-gray-100 focus:border-purple-500 focus:ring-purple-500/20 rounded-xl font-medium transition-all"
                                         />
                                     </div>
                                 </div>
                             </div>
 
-                            <div className='space-y-2'>
+                            <div className='space-y-1'>
                                 <Label className="text-xs font-black text-gray-500 uppercase tracking-widest ml-1">Email Address</Label>
                                 <div className='relative'>
                                     <div className='absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none'>
@@ -144,12 +144,12 @@ const Signup = () => {
                                         value={input.email}
                                         name="email"
                                         onChange={changeEventHandler}
-                                        className="pl-10 h-10 bg-white border-gray-100 focus:border-purple-500 focus:ring-purple-500/20 rounded-xl font-medium transition-all"
+                                        className="pl-10 h-8 bg-white border-gray-100 focus:border-purple-500 focus:ring-purple-500/20 rounded-xl font-medium transition-all"
                                     />
                                 </div>
                             </div>
 
-                            <div className='space-y-2'>
+                            <div className='space-y-1'>
                                 <Label className="text-xs font-black text-gray-500 uppercase tracking-widest ml-1">Phone Number</Label>
                                 <div className='relative'>
                                     <div className='absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none'>
@@ -157,16 +157,16 @@ const Signup = () => {
                                     </div>
                                     <Input
                                         type="text"
-                                        placeholder="Enter your Phone Number"
+                                        placeholder="Enter Your Phone Number"
                                         value={input.phoneNumber}
                                         name="phoneNumber"
                                         onChange={changeEventHandler}
-                                        className="pl-10 h-10 bg-white border-gray-100 focus:border-purple-500 focus:ring-purple-500/20 rounded-xl font-medium transition-all"
+                                        className="pl-10 h-8 bg-white border-gray-100 focus:border-purple-500 focus:ring-purple-500/20 rounded-xl font-medium transition-all"
                                     />
                                 </div>
                             </div>
 
-                            <div className='space-y-2'>
+                            <div className='space-y-1'>
                                 <Label className="text-xs font-black text-gray-500 uppercase tracking-widest ml-1">Password</Label>
                                 <div className='relative'>
                                     <div className='absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none'>
@@ -178,14 +178,14 @@ const Signup = () => {
                                         value={input.password}
                                         name="password"
                                         onChange={changeEventHandler}
-                                        className="pl-10 h-10 bg-white border-gray-100 focus:border-purple-500 focus:ring-purple-500/20 rounded-xl font-medium transition-all"
+                                        className="pl-10 h-8 bg-white border-gray-100 focus:border-purple-500 focus:ring-purple-500/20 rounded-xl font-medium transition-all"
                                     />
                                 </div>
                             </div>
 
                             <div className='grid grid-cols-2 gap-4 pt-2'>
                                 <div
-                                    className={`cursor-pointer border p-3 rounded-xl flex items-center gap-3 transition-all ${input.role === 'student' ? 'border-purple-500 bg-purple-50' : 'border-gray-100 hover:border-gray-200 bg-white'}`}
+                                    className={`cursor-pointer border p-2 rounded-xl flex items-center gap-3 transition-all ${input.role === 'student' ? 'border-purple-500 bg-purple-50' : 'border-gray-100 hover:border-gray-200 bg-white'}`}
                                     onClick={() => setInput({ ...input, role: 'student' })}
                                 >
                                     <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${input.role === 'student' ? 'border-purple-600' : 'border-gray-300'}`}>
@@ -194,7 +194,7 @@ const Signup = () => {
                                     <span className={`font-bold text-sm ${input.role === 'student' ? 'text-purple-700' : 'text-gray-600'}`}>Student</span>
                                 </div>
                                 <div
-                                    className={`cursor-pointer border p-3 rounded-xl flex items-center gap-3 transition-all ${input.role === 'recruiter' ? 'border-purple-500 bg-purple-50' : 'border-gray-100 hover:border-gray-200 bg-white'}`}
+                                    className={`cursor-pointer border p-2 rounded-xl flex items-center gap-3 transition-all ${input.role === 'recruiter' ? 'border-purple-500 bg-purple-50' : 'border-gray-100 hover:border-gray-200 bg-white'}`}
                                     onClick={() => setInput({ ...input, role: 'recruiter' })}
                                 >
                                     <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${input.role === 'recruiter' ? 'border-purple-600' : 'border-gray-300'}`}>
@@ -204,7 +204,7 @@ const Signup = () => {
                                 </div>
                             </div>
 
-                            <div className='space-y-2'>
+                            <div className='space-y-1'>
                                 <Label className="text-xs font-black text-gray-500 uppercase tracking-widest ml-1">Profile Picture</Label>
                                 <div className='relative group'>
                                     <Input
@@ -214,7 +214,7 @@ const Signup = () => {
                                         className="hidden"
                                         id="file-upload"
                                     />
-                                    <label htmlFor="file-upload" className='flex items-center gap-3 w-full p-3 bg-white border border-gray-100 border-dashed rounded-xl cursor-pointer hover:bg-gray-50 hover:border-purple-200 transition-all'>
+                                    <label htmlFor="file-upload" className='flex items-center gap-3 w-full p-2 bg-white border border-gray-100 border-dashed rounded-xl cursor-pointer hover:bg-gray-50 hover:border-purple-200 transition-all'>
                                         <div className='w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center text-purple-600'>
                                             <Upload className='h-4 w-4' />
                                         </div>
@@ -227,7 +227,7 @@ const Signup = () => {
                             </div>
                         </div>
 
-                        <Button type="submit" className="w-full h-11 bg-black hover:bg-gray-900 text-white font-black rounded-xl text-md transition-all transform active:scale-95 shadow-xl hover:shadow-2xl mt-4">
+                        <Button type="submit" className="w-full h-10 bg-black hover:bg-gray-900 text-white font-black rounded-xl text-md transition-all transform active:scale-95 shadow-xl hover:shadow-2xl mt-2">
                             {loading ? (
                                 <div className='flex items-center gap-2'>
                                     <Loader2 className='h-4 w-4 animate-spin' />
@@ -236,7 +236,7 @@ const Signup = () => {
                             ) : 'Sign Up'}
                         </Button>
 
-                        <div className="relative my-6">
+                        <div className="relative my-3">
                             <div className="absolute inset-0 flex items-center">
                                 <span className="w-full border-t border-gray-100" />
                             </div>
@@ -245,14 +245,14 @@ const Signup = () => {
                             </div>
                         </div>
 
-                        <div className="flex gap-4 mb-6">
-                            <a href={`${USER_API_END_POINT}/auth/google`} className="flex-1 h-11 bg-white border border-gray-100 rounded-xl flex items-center justify-center hover:bg-gray-50 hover:border-gray-200 transition-all">
+                        <div className="flex gap-4 mb-2">
+                            <a href={`${USER_API_END_POINT}/auth/google`} className="flex-1 h-10 bg-white border border-gray-100 rounded-xl flex items-center justify-center hover:bg-gray-50 hover:border-gray-200 transition-all">
                                 <i className="fa-brands fa-google text-xl text-[#DB4437]"></i>
                             </a>
-                            <a href={`${USER_API_END_POINT}/auth/linkedin`} className="flex-1 h-11 bg-white border border-gray-100 rounded-xl flex items-center justify-center hover:bg-gray-50 hover:border-gray-200 transition-all">
+                            <a href={`${USER_API_END_POINT}/auth/linkedin`} className="flex-1 h-10 bg-white border border-gray-100 rounded-xl flex items-center justify-center hover:bg-gray-50 hover:border-gray-200 transition-all">
                                 <i className="fa-brands fa-linkedin text-xl text-[#0077B5]"></i>
                             </a>
-                            <a href={`${USER_API_END_POINT}/auth/github`} className="flex-1 h-11 bg-white border border-gray-100 rounded-xl flex items-center justify-center hover:bg-gray-50 hover:border-gray-200 transition-all">
+                            <a href={`${USER_API_END_POINT}/auth/github`} className="flex-1 h-10 bg-white border border-gray-100 rounded-xl flex items-center justify-center hover:bg-gray-50 hover:border-gray-200 transition-all">
                                 <i className="fa-brands fa-github text-xl text-[#333]"></i>
                             </a>
                         </div>

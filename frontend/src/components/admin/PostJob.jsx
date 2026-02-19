@@ -58,7 +58,6 @@ const PostJob = () => {
             payload.append("date", new Date().toISOString().split('T')[0]);
 
             const res = await axios.post(`${JOB_API_END_POINT}/post`, payload, {
-                headers: { 'Content-Type': 'multipart/form-data' },
                 withCredentials: true
             });
 

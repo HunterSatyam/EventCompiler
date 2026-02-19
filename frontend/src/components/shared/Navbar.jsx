@@ -2,7 +2,7 @@ import React from 'react'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Button } from '../ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
-import { LogOut, User2 } from 'lucide-react'
+import { LogOut, User2, Heart } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
@@ -63,6 +63,14 @@ const Navbar = () => {
                                         )}
                                     </li>
                                     <li className='hover:text-purple-600 transition-colors'><Link to="/browse">Browse</Link></li>
+                                    <li className='hover:text-purple-600 transition-colors'><Link to="/resume/builder">Resume Builder</Link></li>
+                                    <li className='hover:text-purple-600 transition-colors'><Link to="/resume/ats">ATS Scanner</Link></li>
+                                    <li className='hover:text-purple-600 transition-colors'>
+                                        <Link to="/saved-events" className='flex items-center gap-2'>
+                                            <Heart size={20} />
+                                            <span className='hidden md:inline'>Saved</span>
+                                        </Link>
+                                    </li>
 
                                 </>
                             )

@@ -69,7 +69,7 @@ const HeroSection = () => {
                 {/* Hero Title */}
                 <motion.h1 variants={itemVariants} className='text-6xl md:text-8xl font-black text-gray-900 leading-[0.95] tracking-tight mb-8'>
                     The Global <br />
-                    <span className='text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-800 underline decoration-purple-200 decoration-8 underline-offset-[12px]'>Career Compass</span>
+                    <span className='text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-800 underline decoration-purple-200 decoration-8 underline-offset-[12px]'>Career Navigator</span>
                 </motion.h1>
 
                 <motion.p variants={itemVariants} className='max-w-2xl mx-auto text-lg md:text-xl text-gray-500 font-medium leading-relaxed mb-12'>

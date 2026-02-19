@@ -42,5 +42,17 @@ const userSchema = new mongoose.Schema({
             default: ""
         }
     },
+    savedEvents: [{
+        eventType: {
+            type: String,
+            enum: ['Job', 'Internship', 'Hackathon', 'Competition', 'Webinar', 'Certification'],
+            required: true
+        },
+        eventId: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            refPath: 'savedEvents.eventType'
+        }
+    }],
 }, { timestamps: true });
 export const User = mongoose.model('User', userSchema);

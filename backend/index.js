@@ -13,6 +13,8 @@ import webinarRoute from "./routes/webinar.route.js";
 import competitionRoute from "./routes/competition.route.js";
 import certificationRoute from "./routes/certification.route.js";
 import notificationRoute from "./routes/notification.route.js";
+import resumeRoute from "./routes/resume.route.js";
+import atsRoute from "./routes/ats.route.js";
 import session from "express-session";
 import passport from "passport";
 import "./utils/passport.js";
@@ -60,6 +62,8 @@ app.use("/api/v1/webinar", webinarRoute);
 app.use("/api/v1/competition", competitionRoute);
 app.use("/api/v1/certification", certificationRoute);
 app.use("/api/v1/notification", notificationRoute);
+app.use("/api/v1/resume", resumeRoute);
+app.use("/api/v1/ats", atsRoute);
 //"http://localhost:8000/api/v1/user/register"
 
 

@@ -43,6 +43,9 @@ export const notifyMatchingStudents = async (event, eventType) => {
 
         if (newNotifications.length > 0) {
             await Notification.insertMany(newNotifications);
+            console.log(`Sent ${newNotifications.length} notifications for ${event.title}`);
+        } else {
+            console.log(`No matching students found for ${event.title}`);
         }
     } catch (error) {
         console.error("Error sending notifications:", error);

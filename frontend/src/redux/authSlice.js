@@ -12,8 +12,14 @@ const authSlice = createSlice({
         },
         setUser: (state, action) => {
             state.user = action.payload;
+        },
+        setSavedEvents: (state, action) => {
+            // Update savedEvents in the user object
+            if (state.user) {
+                state.user.savedEvents = action.payload;
+            }
         }
     }
 });
-export const { setLoading, setUser } = authSlice.actions;
+export const { setLoading, setUser, setSavedEvents } = authSlice.actions;
 export default authSlice.reducer;

@@ -1,5 +1,5 @@
 import express from "express";
-import { login, logout, register, updateProfile, socialLogin, getMyProfile } from "../controllers/user.controller.js";
+import { login, logout, register, updateProfile, socialLogin, getMyProfile, toggleSavedEvent, getSavedEvents } from "../controllers/user.controller.js";
 import passport from "passport";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 import { singleUpload, upload } from "../middlewares/multer.js";
@@ -23,5 +23,9 @@ router.get("/auth/linkedin/callback", passport.authenticate("linkedin", { sessio
 
 // Get Profile
 router.route("/me").get(isAuthenticated, getMyProfile);
+
+// Saved Events
+router.route("/saved").get(isAuthenticated, getSavedEvents);
+router.route("/toggle-save").post(isAuthenticated, toggleSavedEvent);
 
 export default router;

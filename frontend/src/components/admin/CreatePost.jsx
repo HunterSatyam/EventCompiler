@@ -100,7 +100,14 @@ const CreatePost = () => {
             });
 
             // Add jobType based on selectedType for generic parsing if needed
-            const jobTypeLabel = POST_TYPES.find(t => t.id === selectedType)?.title || 'Job';
+            let jobTypeLabel = 'Job';
+            if (selectedType === 'job') jobTypeLabel = 'Job';
+            else if (selectedType === 'internship') jobTypeLabel = 'Internship';
+            else if (selectedType === 'hackathon') jobTypeLabel = 'Hackathon';
+            else if (selectedType === 'webinar') jobTypeLabel = 'Webinar';
+            else if (selectedType === 'competition') jobTypeLabel = 'Competition';
+            else if (selectedType === 'certification') jobTypeLabel = 'Certification';
+
             payload.append('jobType', jobTypeLabel);
 
             // Handle date mapping for Competition
@@ -119,7 +126,6 @@ const CreatePost = () => {
             }
 
             const res = await axios.post(getEndpoint(), payload, {
-                headers: { 'Content-Type': 'multipart/form-data' },
                 withCredentials: true
             });
 
@@ -179,6 +185,10 @@ const CreatePost = () => {
                         <div>
                             <label className={labelBase}>Experience Level (Years)</label>
                             <input type="number" name="experience" value={formData.experience} onChange={handleInputChange} placeholder="0 for freshers" className={inputBase} />
+                        </div>
+                        <div>
+                            <label className={labelBase}>No. of Positions</label>
+                            <input type="number" name="position" value={formData.position} onChange={handleInputChange} placeholder="e.g. 5" className={inputBase} />
                         </div>
                     </>
                 )}

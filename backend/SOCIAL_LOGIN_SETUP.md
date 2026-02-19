@@ -15,7 +15,7 @@ To enable social login (Google, GitHub, LinkedIn), you need to obtain Client IDs
 9.  Add them to `backend/.env`:
     ```
     GOOGLE_CLIENT_ID=your_client_id_here
-    GOOGLE_CLIENT_SECRET=your_client_secret_here
+    GOOGLE_CLIENT_SECRET=your_google_client_id
     ```
 
 ## 2. GitHub OAuth
@@ -28,7 +28,7 @@ To enable social login (Google, GitHub, LinkedIn), you need to obtain Client IDs
 6.  Add them to `backend/.env`:
     ```
     GITHUB_CLIENT_ID=your_client_id_here
-    GITHUB_CLIENT_SECRET=your_client_secret_here
+    GITHUB_CLIENT_SECRET=your_github_client_id
     ```
 
 ## 3. LinkedIn OAuth

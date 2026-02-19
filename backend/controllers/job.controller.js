@@ -2,6 +2,7 @@ import { Job } from "../models/job.model.js";
 import { Company } from "../models/company.model.js";
 import cloudinary from "../utils/cloudinary.js";
 import getDataUri from "../utils/datauri.js";
+import { notifyMatchingStudents } from "../utils/notificationHelper.js";
 
 // admin post krega job
 export const postJob = async (req, res) => {
@@ -73,10 +74,12 @@ export const postJob = async (req, res) => {
 
         await job.populate('company');
 
-        // Trigger notifications for matching students
-        import("../utils/notificationHelper.js").then(module => {
-            module.notifyMatchingStudents(job, jobType || 'Job');
-        });
+        // matches all logic
+        try {
+            notifyMatchingStudents(job, jobType || 'Job');
+        } catch (error) {
+            console.error("Error triggering notifications:", error);
+        }
 
 
         return res.status(201).json({

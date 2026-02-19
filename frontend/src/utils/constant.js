@@ -8,3 +8,5 @@ export const WEBINAR_API_END_POINT = "http://localhost:8000/api/v1/webinar";
 export const COMPETITION_API_END_POINT = "http://localhost:8000/api/v1/competition";
 export const CERTIFICATION_API_END_POINT = "http://localhost:8000/api/v1/certification";
 export const NOTIFICATION_API_END_POINT = "http://localhost:8000/api/v1/notification";
+export const RESUME_API_END_POINT = "http://localhost:8000/api/v1/resume";
+export const ATS_API_END_POINT = "http://localhost:8000/api/v1/ats";

@@ -288,3 +288,87 @@ export const getMyProfile = async (req, res) => {
         })
     }
 }
+
+// Toggle save event
+export const toggleSavedEvent = async (req, res) => {
+    try {
+        const userId = req.id;
+        const { eventType, eventId } = req.body;
+
+        if (!eventType || !eventId) {
+            return res.status(400).json({
+                message: "Event type and ID are required.",
+                success: false
+            });
+        }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found.",
+                success: false
+            });
+        }
+
+        // Check if event is already saved
+        const isSavedIndex = user.savedEvents.findIndex(
+            item => item.eventId.toString() === eventId && item.eventType === eventType
+        );
+
+        if (isSavedIndex > -1) {
+            // Unsave
+            user.savedEvents.splice(isSavedIndex, 1);
+            await user.save();
+            return res.status(200).json({
+                message: "Event removed from saved list.",
+                success: true,
+                isSaved: false
+            });
+        } else {
+            // Save
+            user.savedEvents.push({ eventType, eventId });
+            await user.save();
+            return res.status(200).json({
+                message: "Event saved successfully.",
+                success: true,
+                isSaved: true
+            });
+        }
+    } catch (error) {
+        console.error("Toggle Saved Event Error:", error);
+        return res.status(500).json({
+            message: "Internal server error",
+            success: false
+        });
+    }
+};
+
+// Get saved events
+export const getSavedEvents = async (req, res) => {
+    try {
+        const userId = req.id;
+        const user = await User.findById(userId).populate({
+            path: 'savedEvents.eventId',
+            select: 'title company location salary stipend prize date logo description jobType createdAt position experienceLevel duration experience',
+            populate: { path: 'company' }
+        });
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found.",
+                success: false
+            });
+        }
+
+        return res.status(200).json({
+            savedEvents: user.savedEvents,
+            success: true
+        });
+    } catch (error) {
+        console.error("Get Saved Events Error:", error);
+        return res.status(500).json({
+            message: "Internal server error",
+            success: false
+        });
+    }
+};

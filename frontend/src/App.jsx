@@ -11,6 +11,10 @@ import CreatePost from './components/admin/CreatePost'
 import PostJob from './components/admin/PostJob'
 import AdminJobs from './components/admin/AdminJobs'
 import Companies from './components/admin/Companies'
+import SavedEvents from './components/SavedEvents'
+import CareerCompassAI from './components/CareerCompassAI'
+import ResumeBuilder from './components/resume/ResumeBuilder'
+import ATSScanner from './components/resume/ATSScanner'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { setUser } from './redux/authSlice'
@@ -65,6 +69,18 @@ const appRouter = createBrowserRouter([
   {
     path: '/admin/companies',
     element: <Companies />
+  },
+  {
+    path: '/saved-events',
+    element: <SavedEvents />
+  },
+  {
+    path: '/resume/builder',
+    element: <ResumeBuilder />
+  },
+  {
+    path: '/resume/ats',
+    element: <ATSScanner />
   }
 ])
 
@@ -89,6 +105,7 @@ function App() {
   return (
     <div>
       <RouterProvider router={appRouter} />
+      <CareerCompassAI />
     </div>
   )
 }
